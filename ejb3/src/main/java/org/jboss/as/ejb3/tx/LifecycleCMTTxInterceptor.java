@@ -43,6 +43,9 @@ public class LifecycleCMTTxInterceptor extends CMTTxInterceptor implements Inter
     private final TransactionAttributeType transactionAttributeType;
     private final int transactionTimeout;
 
+    //ASO
+    private final String className = getClass().getSimpleName();
+
     public LifecycleCMTTxInterceptor(final TransactionAttributeType transactionAttributeType, final int transactionTimeout) {
         this.transactionAttributeType = transactionAttributeType;
         this.transactionTimeout = transactionTimeout;
@@ -52,6 +55,10 @@ public class LifecycleCMTTxInterceptor extends CMTTxInterceptor implements Inter
     @Override
     public Object processInvocation(InterceptorContext invocation) throws Exception {
         final EJBComponent component = (EJBComponent) invocation.getPrivateData(Component.class);
+        //ASO
+        String ejbCompName = component.getComponentName();
+          System.out.println("***"+className+".processInvocation("+invocation.toString()+")");
+        System.out.println("*******invocation accedant a "+ejbCompName);
 
         switch (transactionAttributeType) {
             case MANDATORY:

@@ -53,6 +53,10 @@ public final class ViewManagedReferenceFactory implements ContextListManagedRefe
     /** {@inheritDoc} */
     public ManagedReference getReference() {
         try {
+            //ASO
+            System.out.println("***"+getClass().getSimpleName()+"#getReference");
+            System.out.println("***nom de la classe proxy utilsee dans la vue"+view.getProxyClass().getSimpleName()+"***");
+            System.out.println("***nom de la classe proxy de la vue"+view.getViewClass().getSimpleName()+"***");
             return view.createInstance();
         } catch (Exception e) {
             throw EeMessages.MESSAGES.componentViewConstructionFailure(e);

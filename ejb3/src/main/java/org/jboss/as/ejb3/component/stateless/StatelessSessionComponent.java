@@ -57,11 +57,18 @@ public class StatelessSessionComponent extends SessionBeanComponent implements P
      */
     public StatelessSessionComponent(final StatelessSessionComponentCreateService slsbComponentCreateService) {
         super(slsbComponentCreateService);
+        //ASO
+        System.out.println("***construction d'une instance StatelessEJBComponent***");
 
         StatelessObjectFactory<StatelessSessionComponentInstance> factory = new StatelessObjectFactory<StatelessSessionComponentInstance>() {
             @Override
             public StatelessSessionComponentInstance create() {
-                return (StatelessSessionComponentInstance) createInstance();
+                //ASO
+               System.out.println("******"+getClass().getSimpleName()+"#create");
+               String SSCInstanceName = StatelessSessionComponentInstance.class.getSimpleName();
+               System.out.println("*********nom de StatelessSessionComponentInstance="+SSCInstanceName);
+
+               return (StatelessSessionComponentInstance) createInstance();
             }
 
             @Override
@@ -87,6 +94,8 @@ public class StatelessSessionComponent extends SessionBeanComponent implements P
 
     @Override
     protected BasicComponentInstance instantiateComponentInstance(Interceptor preDestroyInterceptor, Map<Method, Interceptor> methodInterceptors, Map<Object, Object> context) {
+        //ASO
+        System.out.println("***"+getClass().getSimpleName()+"#instantiateComponentInstance()::retourne une instance de comp Stateless****");
         return new StatelessSessionComponentInstance(this, preDestroyInterceptor, methodInterceptors);
     }
 

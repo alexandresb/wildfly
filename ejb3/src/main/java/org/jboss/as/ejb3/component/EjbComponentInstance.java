@@ -47,6 +47,8 @@ public abstract class EjbComponentInstance extends BasicComponentInstance {
 
     @Override
     public EJBComponent getComponent() {
+        //ASO
+        System.out.println("***"+getClass().getSimpleName()+"#getComponent::retourne "+((EJBComponent) super.getComponent()).getComponentName()+"***");
         return (EJBComponent) super.getComponent();
     }
 

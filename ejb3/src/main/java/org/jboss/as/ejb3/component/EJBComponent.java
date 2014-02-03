@@ -153,6 +153,8 @@ public abstract class EJBComponent extends BasicComponent {
     }
 
     protected <T> T createViewInstanceProxy(final Class<T> viewInterface, final Map<Object, Object> contextData) {
+        //ASO
+        System.out.println("***"+getClass().getSimpleName()+"#createViewInstanceProxy():: creation d'un proxy pour la vue****");
         if (viewInterface == null)
             throw MESSAGES.viewInterfaceCannotBeNull();
         if (viewServices.containsKey(viewInterface.getName())) {
@@ -164,6 +166,7 @@ public abstract class EJBComponent extends BasicComponent {
     }
 
     protected <T> T createViewInstanceProxy(final Class<T> viewInterface, final Map<Object, Object> contextData, final ServiceName serviceName) {
+
         final ServiceController<?> serviceController = currentServiceContainer().getRequiredService(serviceName);
         final ComponentView view = (ComponentView) serviceController.getValue();
         final ManagedReference instance;

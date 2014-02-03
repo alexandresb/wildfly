@@ -59,6 +59,8 @@ public class EJBBusinessMethod implements Serializable {
         this.viewType = view == null ? MethodIntf.BEAN : view;
 
         this.hashCode = this.generateHashCode();
+        //ASO
+        System.out.println("***instanciation de EJBBusinessMethod pour methodName="+this.methodName);
     }
 
     @Override

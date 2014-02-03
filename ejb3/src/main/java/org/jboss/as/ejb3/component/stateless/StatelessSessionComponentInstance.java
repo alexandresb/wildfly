@@ -42,6 +42,8 @@ public class StatelessSessionComponentInstance extends SessionBeanComponentInsta
      */
     protected StatelessSessionComponentInstance(final BasicComponent component, final Interceptor preDestroyInterceptor, final Map<Method, Interceptor> methodInterceptors) {
         super(component, preDestroyInterceptor, methodInterceptors);
+        //ASO
+        System.out.println("instanciation d'une instance de comp stateless");
     }
 
     @Override

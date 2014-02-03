@@ -64,7 +64,7 @@ public class AbstractValidationUnitTest {
     private static final Map<String, File> JBOSS_SCHEMAS_MAP = new HashMap<String, File>();
     private static final Map<String, File> CURRENT_JBOSS_SCHEMAS_MAP = new HashMap<String, File>();
     private static Map<String, String> NAMESPACE_MAP = new HashMap<String, String>();
-    private static Map<String, String> OUTDATED_NAMESPACES = new HashMap<>();
+    private static Map<String, String> OUTDATED_NAMESPACES = new HashMap<String, String>();
 
 
     private static final File JBOSS_DIST_DIR;
@@ -105,8 +105,8 @@ public class AbstractValidationUnitTest {
             for (File xsd : xsds) {
                 JBOSS_SCHEMAS_MAP.put(xsd.getName(), xsd);
             }
-            Map<String, BigDecimal> mostRecentVersions = new HashMap<>();
-            Map<String, String> mostRecentNames = new HashMap<>();
+            Map<String, BigDecimal> mostRecentVersions = new HashMap<String, BigDecimal>();
+            Map<String, String> mostRecentNames = new HashMap<String, String>();
             Pattern pattern = Pattern.compile("(.*?)_(\\d)_(\\d).xsd");
             for(Map.Entry<String, File> entry : JBOSS_SCHEMAS_MAP.entrySet()) {
                 final Matcher match = pattern.matcher(entry.getKey());

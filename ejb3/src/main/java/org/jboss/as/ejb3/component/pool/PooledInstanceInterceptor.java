@@ -43,8 +43,13 @@ public class PooledInstanceInterceptor extends AbstractEJBInterceptor {
 
     @Override
     public Object processInvocation(InterceptorContext context) throws Exception {
+        //ASO
+        System.out.println("***"+getClass().getSimpleName()+"#processInvocation()::interception d'un EJB****");
         PooledComponent<ComponentInstance> component = (PooledComponent<ComponentInstance>) getComponent(context, EJBComponent.class);
         ComponentInstance instance = component.getPool().get();
+        //ASO
+       String instanceName =  instance.getClass().getSimpleName();
+       System.out.println("****** nom de la classe de l'instance="+instanceName);
         context.putPrivateData(ComponentInstance.class, instance);
         boolean discarded = false;
         try {

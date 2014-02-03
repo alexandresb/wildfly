@@ -236,6 +236,8 @@ public class EJBComponentCreateService extends BasicComponentCreateService {
     }
 
     protected void processTxAttr(final EJBComponentDescription ejbComponentDescription, final MethodIntf methodIntf, final Method method) {
+        //ASO
+        System.out.println("***"+getClass().getSimpleName()+"#processTxAttr():: proceder les attr trsnels****");
         if (this.getTransactionManagementType().equals(TransactionManagementType.BEAN)) {
             // it's a BMT bean
             return;

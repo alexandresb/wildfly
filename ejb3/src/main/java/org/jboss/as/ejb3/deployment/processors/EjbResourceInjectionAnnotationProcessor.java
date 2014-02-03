@@ -73,13 +73,24 @@ public class EjbResourceInjectionAnnotationProcessor implements DeploymentUnitPr
 
     private static final Logger logger = Logger.getLogger(EjbResourceInjectionAnnotationProcessor.class);
 
+    //ASO
+    private final String className = getClass().getSimpleName();
+
     public EjbResourceInjectionAnnotationProcessor(final boolean appclient) {
         this.appclient = appclient;
+        //ASO
+        String msg = "***"+className+"#EjbResourceInjectionAnnotationProcessor([appclient=]"+appclient+")***";
+        System.out.println(msg);
+
     }
 
     public void deploy(DeploymentPhaseContext phaseContext) throws DeploymentUnitProcessingException {
-        final DeploymentUnit deploymentUnit = phaseContext.getDeploymentUnit();
+        //ASO
+        System.out.println("*** traitement de @EJB::"+className+".deploy(DeploymentPhaseContext)****");
+        String phaseConstextServiceName = phaseContext.getPhaseServiceName().getSimpleName();
+        System.out.println("******* Dans deploy> nom du service de la phase : "+phaseConstextServiceName);
 
+        final DeploymentUnit deploymentUnit = phaseContext.getDeploymentUnit();
         final EEModuleDescription moduleDescription = deploymentUnit.getAttachment(Attachments.EE_MODULE_DESCRIPTION);
         final CompositeIndex index = deploymentUnit.getAttachment(org.jboss.as.server.deployment.Attachments.COMPOSITE_ANNOTATION_INDEX);
         final List<AnnotationInstance> resourceAnnotations = index.getAnnotations(EJB_ANNOTATION_NAME);

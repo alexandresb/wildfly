@@ -67,12 +67,22 @@ public class EjbInjectionSource extends InjectionSource {
     private volatile RemoteViewManagedReferenceFactory remoteFactory;
     private volatile boolean resolved = false;
 
+    //ASO
+    private final String className = getClass().getSimpleName();
+
     public EjbInjectionSource(final String beanName, final String typeName, final String bindingName, final DeploymentUnit deploymentUnit, final boolean appclient) {
         this.beanName = beanName;
         this.typeName = typeName;
         this.bindingName = bindingName;
         this.deploymentUnit = deploymentUnit;
         this.appclient = appclient;
+        //ASO
+        String msg = "***"+className+"#EjbInjectionSource([beanName=]"+beanName;
+        msg +=",[typeName=]"+typeName;
+        msg +=",[bindingName=]"+bindingName;
+        msg +=",[deploymentUnit<nom>=]"+deploymentUnit.getName();
+        msg +=",[applClient=]"+appclient+")***";
+        System.out.println(msg);
     }
 
     public EjbInjectionSource(final String typeName, final String bindingName, final DeploymentUnit deploymentUnit, final boolean appclient) {
@@ -81,9 +91,24 @@ public class EjbInjectionSource extends InjectionSource {
         this.appclient = appclient;
         this.beanName = null;
         this.typeName = typeName;
+        //ASO
+        String msg = "***"+className+"#EjbInjectionSource([typeName=]"+typeName;
+        msg +=",[bindingName=]"+bindingName;
+        msg +=",[deploymentUnit<nom>=]"+deploymentUnit.getName()+")***";
+        msg +=",[applClient=]"+appclient+")***";
+        System.out.println(msg);
     }
 
+    @Override
     public void getResourceValue(final ResolutionContext resolutionContext, final ServiceBuilder<?> serviceBuilder, final DeploymentPhaseContext phaseContext, final Injector<ManagedReferenceFactory> injector) throws DeploymentUnitProcessingException {
+        //ASO
+        String args = "ResolutionContex[getComponentName:"+resolutionContext.getComponentName()+"],";
+        args += "ServiceBuilder<?>[toString:"+serviceBuilder.toString()+"],";
+        args += "DeploymentPhaseContext[phase.name"+phaseContext.getPhase().name()+"],";
+        args += "Injector<ManagedReferenceFactory>[toString:"+injector.toString();
+
+        System.out.println("***recherche d'une instance d'un EJB specfique=>"+getClass().getSimpleName()+".getResourceValue("+args+")****");
+
         resolve();
 
         if (error != null) {
@@ -156,6 +181,8 @@ public class EjbInjectionSource extends InjectionSource {
                         }
                         final ServiceName serviceName = description.getServiceName();
                         resolvedViewName = serviceName;
+                        //ASO
+                        System.out.println("****** Dans "+getClass().getSimpleName()+".resolve[private] > resolvedViewName : "+resolvedViewName);
                     }
                     resolved = true;
                 }

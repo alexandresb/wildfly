@@ -43,6 +43,8 @@ public class InvokeMethodOnTargetInterceptor implements Interceptor {
     private final Method method;
 
     InvokeMethodOnTargetInterceptor(Method method) {
+        //ASO
+        System.out.println("****interceptor invocant la methode cible "+method.getName()+"****");
         this.method = method;
     }
 

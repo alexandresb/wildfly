@@ -33,7 +33,11 @@ public class StatelessSessionBeanRuntimeHandler extends AbstractEJBComponentRunt
 
     public static final StatelessSessionBeanRuntimeHandler INSTANCE = new StatelessSessionBeanRuntimeHandler();
 
+    //ASO
+    private final String className = getClass().getSimpleName();
+
     private StatelessSessionBeanRuntimeHandler() {
         super(EJBComponentType.STATELESS, StatelessSessionComponent.class);
+        System.out.println("***"+className+"#StatelessSessionBeanRuntimeHandler()->super("+EJBComponentType.STATELESS.name()+","+StatelessSessionComponent.class.getSimpleName());
     }
 }

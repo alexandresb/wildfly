@@ -50,6 +50,8 @@ public class EEApplicationDescription {
      * @param deploymentRoot
      */
     public void addComponent(final ComponentDescription description, final VirtualFile deploymentRoot) {
+        //ASO
+        System.out.println("***ajout d'un comp JEE=>"+getClass().getSimpleName()+".adddComponent()****");
         for (final ViewDescription viewDescription : description.getViews()) {
             List<ViewInformation> viewComponents = componentsByViewName.get(viewDescription.getViewClassName());
             if (viewComponents == null) {
@@ -114,6 +116,8 @@ public class EEApplicationDescription {
      * @return A set of all views for the given component name and type
      */
     public Set<ComponentDescription> getComponents(final String componentName, final VirtualFile deploymentRoot) {
+        //ASO
+        System.out.println("***"+getClass().getSimpleName()+"#getComponents()::obtenir le composant nommé "+ componentName+"****");
         if (componentName.contains("#")) {
             final String[] parts = componentName.split("#");
             String path = parts[0];

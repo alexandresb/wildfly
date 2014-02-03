@@ -99,6 +99,8 @@ public class EJBViewDescription extends ViewDescription {
 
     @Override
     protected InjectionSource createInjectionSource(final ServiceName serviceName, Value<ClassLoader> viewClassLoader) {
+        //ASO
+        System.out.println("***"+getClass().getSimpleName()+"#createInjectionSource()****");
         if(methodIntf != MethodIntf.REMOTE && methodIntf != MethodIntf.HOME) {
             return super.createInjectionSource(serviceName, viewClassLoader);
         } else {
