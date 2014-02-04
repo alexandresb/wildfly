@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import io.undertow.Handlers;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.PathHandler;
 import io.undertow.servlet.api.Deployment;
@@ -47,7 +48,7 @@ import org.wildfly.extension.undertow.filters.FilterService;
  */
 public class Host implements Service<Host> {
     private final PathHandler pathHandler = new PathHandler();
-    private volatile HttpHandler rootHandler = pathHandler;
+    private volatile HttpHandler rootHandler= pathHandler;
     private final Set<String> allAliases;
     private final String name;
     private final String defaultWebModule;
@@ -86,6 +87,9 @@ public class Host implements Service<Host> {
         for (InjectedValue<FilterService> injectedFilter : injectedFilters) {
             filters.add(injectedFilter.getValue());
         }
+
+        //we always need to add date header
+        rootHandler = Handlers.date(rootHandler);
         Collections.reverse(filters);
         HttpHandler handler = rootHandler;
         for (FilterService filter : filters) {
@@ -167,11 +171,11 @@ public class Host implements Service<Host> {
     }
 
     public void registerHandler(String path, HttpHandler handler) {
-        pathHandler.addPath(path, handler);
+        pathHandler.addPrefixPath(path, handler);
     }
 
     public void unregisterHandler(String path) {
-        pathHandler.removePath(path);
+        pathHandler.removePrefixPath(path);
     }
 
     /**
@@ -181,7 +185,8 @@ public class Host implements Service<Host> {
         return Collections.unmodifiableSet(deployments);
     }
 
-    public List<InjectedValue<FilterService>> getInjectedFilters() {
+    List<InjectedValue<FilterService>> getInjectedFilters() {
         return injectedFilters;
     }
+
 }

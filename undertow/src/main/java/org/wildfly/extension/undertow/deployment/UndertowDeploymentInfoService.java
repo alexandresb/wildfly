@@ -72,6 +72,7 @@ import org.jboss.as.naming.ManagedReference;
 import org.jboss.as.naming.ManagedReferenceFactory;
 import org.jboss.as.security.plugins.SecurityDomainContext;
 import org.jboss.as.server.deployment.SetupAction;
+import org.jboss.as.version.Version;
 import org.jboss.as.web.common.ExpressionFactoryWrapper;
 import org.jboss.as.web.common.ServletContextAttribute;
 import org.jboss.as.web.common.WebInjectionContainer;
@@ -135,6 +136,7 @@ import org.wildfly.extension.undertow.security.SecurityContextThreadSetupAction;
 import org.wildfly.extension.undertow.security.jacc.JACCAuthorizationManager;
 import org.wildfly.extension.undertow.security.jacc.JACCContextIdHandler;
 import org.wildfly.extension.undertow.security.jaspi.JASPIAuthenticationMechanism;
+import org.wildfly.extension.undertow.security.jaspi.JASPICSecurityContextFactory;
 import org.xnio.IoUtils;
 
 import javax.servlet.Filter;
@@ -349,7 +351,10 @@ public class UndertowDeploymentInfoService implements Service<DeploymentInfo> {
                     deploymentInfo.addThreadSetupAction(threadSetupAction);
                 }
             }
-
+            deploymentInfo.setServerName("WildFly "+ Version.AS_VERSION);
+            if (undertowService.getValue().statisticsEnabled()){
+                deploymentInfo.setMetricsCollector(new UndertowMetricsCollector());
+            }
             this.deploymentInfo = deploymentInfo;
         } finally {
             Thread.currentThread().setContextClassLoader(oldTccl);
@@ -378,8 +383,14 @@ public class UndertowDeploymentInfoService implements Service<DeploymentInfo> {
     private void handleJASPIMechanism(final DeploymentInfo deploymentInfo) {
         ApplicationPolicy applicationPolicy = SecurityConfiguration.getApplicationPolicy(this.securityDomain);
 
-        if (applicationPolicy!=null && JASPIAuthenticationInfo.class.isInstance(applicationPolicy.getAuthenticationInfo())) {
-            deploymentInfo.setJaspiAuthenticationMechanism(new JASPIAuthenticationMechanism(this.securityDomain));
+        if (applicationPolicy != null && JASPIAuthenticationInfo.class.isInstance(applicationPolicy.getAuthenticationInfo())) {
+            String authMethod = null;
+            LoginConfig loginConfig = deploymentInfo.getLoginConfig();
+            if (loginConfig != null && loginConfig.getAuthMethods().size() > 0)
+                authMethod = loginConfig.getAuthMethods().get(0).getName();
+
+            deploymentInfo.setJaspiAuthenticationMechanism(new JASPIAuthenticationMechanism(this.securityDomain, authMethod));
+            deploymentInfo.setSecurityContextFactory(new JASPICSecurityContextFactory(this.securityDomain));
         }
     }
 
