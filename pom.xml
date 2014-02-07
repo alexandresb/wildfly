@@ -104,7 +104,7 @@
         <version.gnu.getopt>1.0.13</version.gnu.getopt>
         <version.groovy-all>2.2.1</version.groovy-all>
         <version.io.netty>4.0.15.Final</version.io.netty>
-        <version.io.undertow>1.0.0.CR2</version.io.undertow>
+        <version.io.undertow>1.0.0.CR4</version.io.undertow>
         <version.io.undertow.jastow>1.0.0.Final</version.io.undertow.jastow>
         <version.javax.activation>1.1.1</version.javax.activation>
         <version.javax.enterprise>1.1</version.javax.enterprise>
@@ -161,7 +161,7 @@
         <version.org.infinispan>6.0.1.Final</version.org.infinispan>
         <version.org.jacorb>2.3.2-jbossorg-5</version.org.jacorb>
         <version.org.javassist>3.18.1-GA</version.org.javassist>
-        <version.org.jberet>1.0.0.CR2</version.org.jberet>
+        <version.org.jberet>1.0.0.Final</version.org.jberet>
         <version.org.jdom>1.1.2</version.org.jdom>
         <version.org.jboss.aesh>0.33.11</version.org.jboss.aesh>
         <version.org.jboss.arquillian.core>1.1.2.Final-wildfly-1</version.org.jboss.arquillian.core>
@@ -189,7 +189,7 @@
         <version.org.jboss.logmanager.log4j-jboss-logmanager>1.1.0.Final</version.org.jboss.logmanager.log4j-jboss-logmanager>
         <version.org.jboss.marshalling.jboss-marshalling>1.4.3.Final</version.org.jboss.marshalling.jboss-marshalling>
         <version.org.jboss.metadata>8.0.0.Final</version.org.jboss.metadata>
-        <version.org.jboss.mod_cluster>1.3.0.Alpha1</version.org.jboss.mod_cluster>
+        <version.org.jboss.mod_cluster>1.3.0.Final</version.org.jboss.mod_cluster>
         <version.org.jboss.modules.jboss-modules>1.3.0.Final</version.org.jboss.modules.jboss-modules>
         <version.org.jboss.msc.jboss-msc>1.2.0.Final</version.org.jboss.msc.jboss-msc>
         <version.org.jboss.xnio.netty.netty-xnio-transport>0.1.1.Final</version.org.jboss.xnio.netty.netty-xnio-transport>
@@ -329,6 +329,14 @@
 
     <build>
         <plugins>
+            <!-- to deal with type 'bundle' dependencies -->
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <inherited>true</inherited>
+                <extensions>true</extensions>
+            </plugin>
+
            <!-- Zanata translations -->
             <plugin>
               <groupId>org.zanata</groupId>
@@ -3099,13 +3107,6 @@
                          <artifactId>spring-jms</artifactId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.directory.server</groupId>
-                <artifactId>apacheds-all</artifactId>
-                <scope>test</scope>
-                <version>${version.org.apache.ds}</version>
             </dependency>
 
             <dependency>
@@ -6475,6 +6476,16 @@
                         <artifactId>xml-apis</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+
+            <!-- lastly define extra BOMs -->
+
+            <dependency>
+                <groupId>org.apache.directory.server</groupId>
+                <artifactId>apacheds-parent</artifactId>
+                <version>${version.org.apache.ds}</version>
+                <scope>import</scope>
+                <type>pom</type>
             </dependency>
         </dependencies>
     </dependencyManagement>
