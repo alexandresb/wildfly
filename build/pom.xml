@@ -30,7 +30,7 @@
     <parent>
         <groupId>org.wildfly</groupId>
         <artifactId>wildfly-parent</artifactId>
-        <version>8.0.0.Final-SNAPSHOT</version>
+        <version>8.0.1.Final-SNAPSHOT</version>
     </parent>
 
     <artifactId>wildfly-build</artifactId>
@@ -1006,11 +1006,6 @@
                 <dependency>
                     <groupId>org.wildfly</groupId>
                     <artifactId>wildfly-cmp</artifactId>
-                </dependency>
-
-                <dependency>
-                    <groupId>org.wildfly</groupId>
-                    <artifactId>wildfly-configadmin</artifactId>
                 </dependency>
 
                 <dependency>

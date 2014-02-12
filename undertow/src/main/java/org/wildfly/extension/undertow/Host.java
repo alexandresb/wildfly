@@ -25,12 +25,16 @@ package org.wildfly.extension.undertow;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 import io.undertow.Handlers;
+import io.undertow.security.api.AuthenticationMechanism;
 import io.undertow.server.HttpHandler;
 import io.undertow.server.handlers.PathHandler;
 import io.undertow.servlet.api.Deployment;
@@ -57,6 +61,7 @@ public class Host implements Service<Host> {
     private final InjectedValue<AccessLogService> accessLogService = new InjectedValue<>();
     private final List<InjectedValue<FilterRef>> filters = new CopyOnWriteArrayList<>();
     private final Set<Deployment> deployments = new CopyOnWriteArraySet<>();
+    private final Map<String, AuthenticationMechanism> additionalAuthenticationMechanisms = new ConcurrentHashMap<>();
 
     protected Host(String name, List<String> aliases, String defaultWebModule) {
         this.name = name;
@@ -91,7 +96,8 @@ public class Host implements Service<Host> {
         //handle requests that use the Expect: 100-continue header
         rootHandler = Handlers.httpContinueRead(rootHandler);
         //we always need to add date header
-        rootHandler = Handlers.date(rootHandler);
+        //commented out for now as it causes issues with restEasy
+        //rootHandler = Handlers.date(rootHandler);
         Collections.reverse(filters);
         HttpHandler handler = rootHandler;
         for (FilterRef filter : filters) {
@@ -191,4 +197,15 @@ public class Host implements Service<Host> {
         return filters;
     }
 
+    void registerAdditionalAuthenticationMechanism(String name, AuthenticationMechanism authenticationMechanism){
+        additionalAuthenticationMechanisms.put(name, authenticationMechanism);
+    }
+
+    void unregisterAdditionalAuthenticationMechanism(String name){
+        additionalAuthenticationMechanisms.remove(name);
+    }
+
+    public Map<String, AuthenticationMechanism> getAdditionalAuthenticationMechanisms() {
+        return new LinkedHashMap<>(additionalAuthenticationMechanisms);
+    }
 }
